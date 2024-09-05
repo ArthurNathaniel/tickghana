@@ -13,12 +13,24 @@
 <section class="login_all">
 <div class="forms_all">
     <form action="">
-        <div class="forms_title">
-            <h1>Login</h1>
+        <div class="forms_title forms_logo">
+        
+        </div>
+        <div class="forms">
+            <h3>Login as an Admin</h3>
         </div>
         <div class="forms">
             <label>Email Address:</label>
-            <input type="email" placeholder="username@gmail.com">
+            <input type="email" placeholder="Enter your email address">
+        </div>
+        <div class="forms">
+            <label>Password:</label>
+            <input type="password" placeholder="Enter your password">
+        </div>
+        <div class="forms">
+            <button>
+                Login
+            </button>
         </div>
     </form>
     </div>
