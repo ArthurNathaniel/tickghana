@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "Bricolage Grotesque", system-ui;
+
+}
+
+body {
+    font-family: "Bricolage Grotesque", system-ui;
+background-color: #FFF;
+}
+
+.logo{
+    width: 120px;
+    height: 80px;
+    background-image: url(../images/logo.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.navbar_all{
+    /* background-color: #E99F04; */
+    padding: 0 5%;
+    /* padding-block: 20px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #F1F1F1;
+position: fixed;
+z-index: 455;
+width: 100%;
+background-color: #FFF;
+}
+
+.nav_links {
+    display: flex;
+    gap: 50px;
+}
+
+.nav_links a {
+    display: flex;
+    gap: 7px;
+    text-decoration: none;
+    color: #333;
+}
+.nav_links a.active {
+    color: #E99F04; 
+    font-weight: bold;
+
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
