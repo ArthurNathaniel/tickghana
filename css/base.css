@@ -29,10 +29,11 @@ background-color: #FFF;
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid #F1F1F1;
-position: fixed;
+/* position: fixed;
 z-index: 455;
 width: 100%;
 background-color: #FFF;
+top: 0; */
 }
 
 .nav_links {

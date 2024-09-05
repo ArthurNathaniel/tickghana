@@ -1,72 +1,114 @@
 <?php
 include 'db.php';
 
-$id = $_GET['id'];
+// Check if form is submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $event_title = $_POST['event_title'];
+    $event_msg = $_POST['event_msg'];
+    $event_date = $_POST['event_date'];
+    $event_time = $_POST['event_time'];
+    $event_price = $_POST['event_price'];
+    
+    // Handle image upload
+    $image = $_FILES['image']['name'];
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
 
-$sql = "SELECT * FROM events WHERE id = $id";
-$result = $conn->query($sql);
+    // Upload the file
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+        // Insert event details
+        $sql = "INSERT INTO events (image, event_title, event_msg, event_date, event_time, event_price) 
+                VALUES ('$image', '$event_title', '$event_msg', '$event_date', '$event_time', '$event_price')";
 
-if ($result->num_rows > 0) {
-    $event = $result->fetch_assoc();
-} else {
-    echo "Event not found";
-    exit;
+        if ($conn->query($sql) === TRUE) {
+            $event_id = $conn->insert_id; // Get the ID of the newly created event
+
+            // Insert ticket details
+            foreach ($_POST['ticket_name'] as $key => $ticket_name) {
+                $ticket_price = $_POST['ticket_price'][$key];
+                $ticket_sql = "INSERT INTO tickets (event_id, ticket_name, ticket_price) 
+                               VALUES ('$event_id', '$ticket_name', '$ticket_price')";
+                $conn->query($ticket_sql);
+            }
+
+            echo "New event and tickets created successfully!";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
 }
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $event['event_title']; ?></title>
-    <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack JS -->
+    <title>Add Event</title>
     <script>
-        function calculateTotal() {
-            let qty = document.getElementById('ticket_qty').value;
-            let price = <?php echo $event['event_price']; ?>;
-            let total = qty * price;
-            document.getElementById('total_price').textContent = 'GHS ' + total.toFixed(2);
-            return total;
+        function addRow() {
+            const table = document.getElementById('ticket_table');
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td><input type="text" name="ticket_name[]" required></td>
+                <td><input type="number" name="ticket_price[]" required></td>
+                <td><button type="button" onclick="deleteRow(this)">Delete</button></td>
+            `;
         }
 
-        function payWithPaystack() {
-            let totalAmount = calculateTotal() * 100; // Paystack requires amount in kobo/pesewas
-
-            let handler = PaystackPop.setup({
-                key: 'pk_test_112a19f8ae988db1be016b0323b0e4fe95783fe8', // Replace with your public key
-                email: 'customer@example.com', // Change to dynamic customer email
-                amount: totalAmount, // in pesewas (100 GHS = 10000 pesewas)
-                currency: 'GHS',
-                ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a random reference number
-                callback: function(response) {
-                    alert('Payment successful! Reference: ' + response.reference);
-                    // Here you can handle the backend logic to save the payment
-                },
-                onClose: function() {
-                    alert('Payment window closed.');
-                }
-            });
-            handler.openIframe();
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
         }
     </script>
 </head>
 <body>
 
-    <h1><?php echo $event['event_title']; ?></h1>
-    <img src="uploads/<?php echo $event['image']; ?>" alt="<?php echo $event['event_title']; ?>">
-    <p><?php echo $event['event_msg']; ?></p>
-    <p>Date: <?php echo $event['event_date']; ?> Time: <?php echo $event['event_time']; ?></p>
-    <p>Price per ticket: GHS <?php echo $event['event_price']; ?></p>
+<h1>Add Event</h1>
+<form action="" method="POST" enctype="multipart/form-data">
+    <label for="event_title">Event Title:</label><br>
+    <input type="text" name="event_title" required><br><br>
 
-    <label for="ticket_qty">Select Quantity:</label>
-    <input type="number" id="ticket_qty" name="ticket_qty" value="1" min="1" onchange="calculateTotal()" required><br><br>
+    <label for="event_msg">Event Description:</label><br>
+    <textarea name="event_msg" required></textarea><br><br>
 
-    <p>Total Price: <span id="total_price">GHS <?php echo $event['event_price']; ?></span></p>
+    <label for="event_date">Event Date:</label><br>
+    <input type="date" name="event_date" required><br><br>
 
-    <button type="button" onclick="payWithPaystack()">Pay with Paystack</button>
+    <label for="event_time">Event Time:</label><br>
+    <input type="time" name="event_time" required><br><br>
+
+    <label for="event_price">Event Price:</label><br>
+    <input type="number" name="event_price" required><br><br>
+
+    <label for="image">Event Image:</label><br>
+    <input type="file" name="image" required><br><br>
+
+    <h2>Ticket Details</h2>
+    <table id="ticket_table" border="1">
+        <thead>
+            <tr>
+                <th>Ticket Name</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" name="ticket_name[]" required></td>
+                <td><input type="number" name="ticket_price[]" required></td>
+                <td><button type="button" onclick="deleteRow(this)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" onclick="addRow()">Add Ticket</button><br><br>
+
+    <input type="submit" value="Add Event">
+</form>
 
 </body>
 </html>
+

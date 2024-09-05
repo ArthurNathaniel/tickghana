@@ -1,0 +1,20 @@
+.login_all{
+    border: 2px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+form{
+    width: 100%;
+}
+.f
+.forms{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.forms input{
+    height: 35px;
+}

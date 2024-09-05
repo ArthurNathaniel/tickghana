@@ -35,68 +35,8 @@ $conn->close();
     <title><?php echo htmlspecialchars($event['event_title']); ?></title>
     <?php include 'cdn.php' ?>
     <link rel="stylesheet" href="./css/base.css">
-    <link rel="stylesheet" href="./css/index.css">
-    <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack JS -->
-    <style>
-        h1 {
-            color: #333;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        button {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #218838;
-        }
-
-        .total-price {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .ticket-select {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ticket-select label {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/event_details.css">
+    <script src="https://js.paystack.co/v1/inline.js"></script> 
     <script>
         function calculateTotal() {
             let total = 0;
@@ -132,60 +72,10 @@ $conn->close();
 </head>
 
 <body>
-    <style>
-        .event_hero {
-            background: #200122;
-            /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #6f0000, #200122);
-            /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #6f0000, #200122);
-            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            color: #FFF;
-            height: 60vh;
-            position: relative;
-        }
 
-        .event_hero img {
-            width: 200px;
-            height: 200px;
-            position: absolute;
-            right: 5%;
-            top: 30%;
-            object-fit: cover;
-
-        }
-
-        .events_hero_text {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 60vh;
-            position: absolute;
-            padding-left: 5%;
-
-
-
-        }
-
-        .events_hero_text h1 {
-            color: #FFF;
-        }
-        .events_alls{
-            display: grid;
-            grid-template-columns: 3fr 1fr;
-            gap: 30px;
-            padding: 0 5%;
-            margin-top: 50px;
-        }
-        .event_detals_info{
-            background-color: #F1F1F1;
-            padding: 0 5%;
-            padding-block: 20px;
-        }
-    </style>
     <?php include 'navbar.php' ?>
     <section>
-        <div class="event_hero">
+        <div class="event_hero" style="background-image: url('uploads/<?php echo htmlspecialchars($event['image']); ?>');">
             <div class="events_hero_text">
                 <h1><?php echo htmlspecialchars($event['event_title']); ?></h1>
             </div>
@@ -228,11 +118,18 @@ $conn->close();
                 <button type="submit">Pay with Paystack</button>
             </form>
             <div class="event_detals_info">
+            <h3><?php echo htmlspecialchars($event['event_title']); ?></h3> 
+            <hr> 
+          
+            <br>
           <p><?php echo htmlspecialchars($event['event_msg']); ?></p>
-            <p><i class="fa-solid fa-calendar-days"></i> <?php echo htmlspecialchars($event['event_date']); ?> </p>
+          <hr>
+          <br>   
+          <p><i class="fa-solid fa-calendar-days"></i> <?php echo htmlspecialchars($event['event_date']); ?> </p>
             <p><i class="fa-solid fa-clock"></i> <?php echo htmlspecialchars($event['event_time']); ?></p>
             <p><i class="fa-solid fa-ticket"></i> <?php echo htmlspecialchars($event['event_price']); ?></p>
-          </div>
+        <hr>  
+        </div>
         </div>
     </section>
 
