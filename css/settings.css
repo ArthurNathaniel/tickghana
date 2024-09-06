@@ -1,0 +1,30 @@
+.settings_all{
+    padding: 0 35%;
+    margin-top: 50px;
+}
+
+.forms{
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+}
+
+.forms input{
+    width: 100%;
+    height: 40px;
+    border: 1.4px solid #c9c9c9;
+    padding-left: 5%;
+}
+.forms button{
+    height: 40px;
+    background-color: #E99F04;
+    border: none;
+    color: #FFF;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+form{
+margin-bottom: 50px;
+}

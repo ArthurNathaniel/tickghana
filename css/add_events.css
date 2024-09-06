@@ -1,0 +1,65 @@
+.add_events_all{
+    padding:0 30%;
+    margin-block: 50px;
+}
+
+.forms{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+}
+.forms input{
+    height: 40px;
+    border: 1.4px solid #c9c9c9;
+    padding-left: 4%;
+
+}
+.forms button{
+    height: 40px;
+    background-color: #E99F04;
+    border: none;
+    color: #FFF;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #E99F04;
+    color: #FFF;
+}
+
+table input{
+    height: 40px;
+    width: 100%;
+}
+
+table button{
+    height: 40px;
+    width: 100%;
+}
+
+.green button{
+    background-color: green;
+    margin-bottom: 50px;
+}
+.red {
+   background-color: transparent;
+   border: none;
+   color: red;
+   cursor: pointer;
+}

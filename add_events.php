@@ -31,9 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $conn->query($ticket_sql);
             }
 
-            echo "New event and tickets created successfully!";
+            echo "";
+            echo "<script>alert('New event and tickets created successfully!'); window.location.href = 'add_events.php';</script>";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $sql . "" . $conn->error;
         }
     } else {
         echo "Sorry, there was an error uploading your file.";
@@ -48,6 +49,9 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Event</title>
+    <?php include 'cdn.php'; ?>
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/add_events.css">
     <script>
         function addRow() {
             const table = document.getElementById('ticket_table');
@@ -55,7 +59,7 @@ $conn->close();
             row.innerHTML = `
                 <td><input type="text" name="ticket_name[]" required></td>
                 <td><input type="number" name="ticket_price[]" required></td>
-                <td><button type="button" onclick="deleteRow(this)">Delete</button></td>
+                <td><button class="red" type="button" onclick="deleteRow(this)"><i class="fa-solid fa-trash"></i></button></td>
             `;
         }
 
@@ -66,28 +70,43 @@ $conn->close();
     </script>
 </head>
 <body>
-
+<?php include 'sidebar.php'; ?>
+<div class="add_events_all">
 <h1>Add Event</h1>
 <form action="" method="POST" enctype="multipart/form-data">
-    <label for="event_title">Event Title:</label><br>
-    <input type="text" name="event_title" required><br><br>
+  <div class="forms">
+  <label for="event_title">Event Title:</label>
+  <input type="text" name="event_title" required>
+  </div>
 
-    <label for="event_msg">Event Description:</label><br>
-    <textarea name="event_msg" required></textarea><br><br>
+ <div class="forms">
+ <label for="event_msg">Event Description:</label>
+ <textarea name="event_msg" required></textarea>
+ </div>
 
-    <label for="event_date">Event Date:</label><br>
-    <input type="date" name="event_date" required><br><br>
+   <div class="forms">
+   <label for="event_date">Event Date:</label>
+   <input type="date" name="event_date" required>
+   </div>
 
-    <label for="event_time">Event Time:</label><br>
-    <input type="time" name="event_time" required><br><br>
+  <div class="forms">
+  <label for="event_time">Event Time:</label>
+  <input type="time" name="event_time" required>
+  </div>
 
-    <label for="event_price">Event Price:</label><br>
-    <input type="number" name="event_price" required><br><br>
+   <div class="forms">
+   <label for="event_price">Event Price:</label>
+   <input type="number" name="event_price" required>
+   </div>
 
-    <label for="image">Event Image:</label><br>
-    <input type="file" name="image" required><br><br>
+  <div class="forms">
+  <label for="image">Event Image:</label>
+  <input type="file" name="image" required>
+  </div>
 
-    <h2>Ticket Details</h2>
+   <div class="forms">
+   <h2>Ticket Details</h2>
+   </div>
     <table id="ticket_table" border="1">
         <thead>
             <tr>
@@ -100,14 +119,19 @@ $conn->close();
             <tr>
                 <td><input type="text" name="ticket_name[]" required></td>
                 <td><input type="number" name="ticket_price[]" required></td>
-                <td><button type="button" onclick="deleteRow(this)">Delete</button></td>
+                <td><button class="red"  type="button" onclick="deleteRow(this)"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
         </tbody>
     </table>
-    <button type="button" onclick="addRow()">Add Ticket</button><br><br>
-
-    <input type="submit" value="Add Event">
+<div class="forms green">
+<button type="button" onclick="addRow()">Add Ticket</button>
+</div>
+<div class="forms">
+    <button type="submit" >Add Event</button>
+</div>
+    <!-- <input type="submit" value="Add Event"> -->
 </form>
+</div>
 
 </body>
 </html>
