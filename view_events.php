@@ -3,7 +3,7 @@ include 'db.php';
 
 // Fetch all events from the database
 $events = [];
-$sql = "SELECT id, event_title, event_msg, event_date, event_time, event_price FROM events ORDER BY event_date DESC";
+$sql = "SELECT id, event_title, event_msg, event_date, event_time, event_price, event_location, google_map_link, image FROM events ORDER BY event_date DESC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -25,34 +25,39 @@ $conn->close();
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/view_events.css">
     <script>
-           // Show modal and fill event data
-    function showModal(eventId) {
-        fetch('get_event_details.php?id=' + eventId)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('modal_title').innerText = data.event_title;
-                document.getElementById('modal_date').innerText = data.event_date;
-                document.getElementById('modal_time').innerText = data.event_time;
-                document.getElementById('modal_price').innerText = data.event_price;
-                document.getElementById('modal_msg').innerHTML = data.event_msg;
-                document.getElementById('modal_location').innerText = data.event_location;
-                document.getElementById('modal_map_link').href = data.google_map_link;
-                document.getElementById('modal_image').src = 'uploads/' + data.image;
+        // Show modal and fill event data
+        function showModal(eventId) {
+            fetch('get_event_details.php?id=' + eventId)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('modal_title').innerText = data.event_title;
+                    document.getElementById('modal_date').innerText = data.event_date;
+                    document.getElementById('modal_time').innerText = data.event_time;
+                    document.getElementById('modal_price').innerText = data.event_price;
+                    document.getElementById('modal_msg').innerHTML = data.event_msg;
+                    document.getElementById('modal_location').innerText = data.event_location;
+                    document.getElementById('modal_map_link').href = data.google_map_link;
+                    document.getElementById('modal_image').src = 'uploads/' + data.image;
 
-                let ticketTable = document.getElementById('modal_tickets');
-                ticketTable.innerHTML = '';
-                data.tickets.forEach(ticket => {
-                    let row = `<tr><td>${ticket.ticket_name}</td><td>${ticket.ticket_price}</td></tr>`;
-                    ticketTable.innerHTML += row;
+                    let ticketTable = document.getElementById('modal_tickets');
+                    ticketTable.innerHTML = '';
+                    data.tickets.forEach(ticket => {
+                        let row = `<tr><td>${ticket.ticket_name}</td><td>${ticket.ticket_price}</td></tr>`;
+                        ticketTable.innerHTML += row;
+                    });
+
+                    document.getElementById('modal').style.display = 'block';
                 });
-
-                document.getElementById('modal').style.display = 'block';
-            });
-    }
+        }
 
         // Hide modal
         function hideModal() {
             document.getElementById('modal').style.display = 'none';
+        }
+
+        // Redirect to edit page
+        function redirectToEdit(eventId) {
+            window.location.href = 'edit_event.php?id=' + eventId;
         }
 
         // Delete event
@@ -83,6 +88,7 @@ $conn->close();
                         <td><?php echo htmlspecialchars($event['event_date']); ?></td>
                         <td>
                             <button type="button" onclick="showModal('<?php echo $event['id']; ?>')">View</button>
+                            <button type="button" onclick="redirectToEdit('<?php echo $event['id']; ?>')">Edit</button>
                             <button type="button" onclick="deleteEvent('<?php echo $event['id']; ?>')">Delete</button>
                         </td>
                     </tr>

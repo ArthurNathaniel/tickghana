@@ -1,0 +1,46 @@
+.manage_ticket_all{
+    padding: 0 5%;
+    padding-block: 50px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #E99F04;
+    color: #FFF;
+}
+
+.forms{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+}
+.forms select{
+    height: 40px;
+    border: 1.4px solid #c9c9c9;
+    padding-left: 2%;
+
+}
+.forms button{
+    height: 40px;
+    background-color: #E99F04;
+    border: none;
+    color: #FFF;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.forms h3{
+    text-align: center;
+}

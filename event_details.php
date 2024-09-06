@@ -228,9 +228,7 @@ $conn->close();
         </div>
     </section>
 
-    <div class="description">
-                    <span><?php echo $event['event_msg']; ?></span>
-                </div>
+   
 </body>
 
 </html>
