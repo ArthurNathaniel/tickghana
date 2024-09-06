@@ -71,6 +71,7 @@ $conn->close();
     let totalAmount = calculateTotal() * 100; // Paystack requires amount in kobo/pesewas
     const ticketQuantities = [];
     const ticketsPurchased = [];
+    const ticketsInfo = []; // Array to store ticket names and references
 
     document.querySelectorAll('.ticket_qty').forEach(input => {
         let qty = parseInt(input.value) || 0;
@@ -82,10 +83,11 @@ $conn->close();
             const ref = 'ref_' + Math.floor((Math.random() * 1000000000) + 1);
             ticketQuantities.push({ticketName, price, ref});
             ticketsPurchased.push({ticketId, ref});
+            ticketsInfo.push({ticketName, ref}); // Store ticket name and reference
         }
     });
 
-    if (ticketQuantities.length === 0) {
+    if (ticketsInfo.length === 0) {
         alert('Please select at least one ticket.');
         return;
     }
@@ -108,8 +110,8 @@ $conn->close();
                     console.log('Server response:', data);
 
                     if (data.status === 'success') {
-                        // Redirect to the view_references.php with reference numbers
-                        let redirectUrl = `view_references.php?references=${encodeURIComponent(data.references)}`;
+                        // Redirect to the view_references.php with reference numbers and ticket info
+                        let redirectUrl = `view_references.php?data=${encodeURIComponent(JSON.stringify(ticketsInfo))}`;
                         window.location.href = redirectUrl;
                     } else {
                         alert('Error saving purchase details: ' + data.message);
@@ -132,6 +134,7 @@ $conn->close();
     });
     handler.openIframe();
 }
+
 
     </script>
 </head>
