@@ -4,7 +4,7 @@ include 'db.php';
 $event_id = $_GET['id'];
 
 // Fetch event details
-$sql = "SELECT event_title, event_msg, event_date, event_time, event_price FROM events WHERE id = ?";
+$sql = "SELECT event_title, event_msg, event_date, event_time, event_price, event_location, google_map_link, image FROM events WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $event_id);
 $stmt->execute();
@@ -29,6 +29,9 @@ echo json_encode([
     'event_date' => $event['event_date'],
     'event_time' => $event['event_time'],
     'event_price' => $event['event_price'],
+    'event_location' => $event['event_location'],
+    'google_map_link' => $event['google_map_link'],
+    'image' => $event['image'],
     'tickets' => $tickets
 ]);
 

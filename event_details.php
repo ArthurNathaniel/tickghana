@@ -203,15 +203,34 @@ $conn->close();
             <div class="event_details_info">
                 <h3><?php echo htmlspecialchars($event['event_title']); ?></h3>
                 <hr>
-                <p><?php echo htmlspecialchars($event['event_msg']); ?></p>
+                <br>
+                <div class="description">
+                    <span><?php echo $event['event_msg']; ?></span>
+                </div>
                 <hr>
+                <br>
                 <p><i class="fa-solid fa-calendar-days"></i> <?php echo htmlspecialchars($event['event_date']); ?></p>
                 <p><i class="fa-solid fa-clock"></i> <?php echo htmlspecialchars($event['event_time']); ?></p>
                 <p><i class="fa-solid fa-ticket"></i> <?php echo htmlspecialchars($event['event_price']); ?></p>
+                <p><i class="fa-solid fa-location-dot"></i> <?php echo htmlspecialchars($event['event_location']); ?></p>
                 <hr>
+                   <!-- Display Google Map in iframe -->
+      <h2>Event Location on Map:</h2>
+    <iframe
+        src="<?php echo $event['google_map_link']; ?>"
+      
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
             </div>
         </div>
     </section>
+
+    <div class="description">
+                    <span><?php echo $event['event_msg']; ?></span>
+                </div>
 </body>
 
 </html>

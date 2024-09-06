@@ -8,7 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $event_date = $_POST['event_date'];
     $event_time = $_POST['event_time'];
     $event_price = $_POST['event_price'];
-    
+    $event_location = $_POST['event_location'];  // Event Location
+    $google_map_link = $_POST['google_map_link'];  // Google Maps Link
+
     // Handle image upload
     $image = $_FILES['image']['name'];
     $target_dir = "uploads/";
@@ -16,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Upload the file
     if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        // Insert event details
-        $sql = "INSERT INTO events (image, event_title, event_msg, event_date, event_time, event_price) 
-                VALUES ('$image', '$event_title', '$event_msg', '$event_date', '$event_time', '$event_price')";
+        // Insert event details including location and Google Maps link
+        $sql = "INSERT INTO events (image, event_title, event_msg, event_date, event_time, event_price, event_location, google_map_link) 
+                VALUES ('$image', '$event_title', '$event_msg', '$event_date', '$event_time', '$event_price', '$event_location', '$google_map_link')";
 
         if ($conn->query($sql) === TRUE) {
             $event_id = $conn->insert_id; // Get the ID of the newly created event
@@ -31,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $conn->query($ticket_sql);
             }
 
-            echo "";
             echo "<script>alert('New event and tickets created successfully!'); window.location.href = 'add_events.php';</script>";
         } else {
             echo "Error: " . $sql . "" . $conn->error;
@@ -43,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,10 +81,12 @@ $conn->close();
   <input type="text" name="event_title" required>
   </div>
 
- <div class="forms">
- <label for="event_msg">Event Description:</label>
- <textarea name="event_msg" required></textarea>
- </div>
+  <div class="forms">
+    <label for="event_msg">Event Description:</label>
+    <div id="editor-container" style="height: 200px;"></div>
+    <input type="hidden" name="event_msg" id="event_msg" required>
+</div>
+
 
    <div class="forms">
    <label for="event_date">Event Date:</label>
@@ -103,6 +107,15 @@ $conn->close();
   <label for="image">Event Image:</label>
   <input type="file" name="image" required>
   </div>
+  <div class="forms">
+    <label for="event_location">Event Location:</label>
+    <input type="text" name="event_location" required>
+</div>
+
+<div class="forms">
+    <label for="google_map_link">Google Maps Link:</label>
+    <input type="url" name="google_map_link" >
+</div>
 
    <div class="forms">
    <h2>Ticket Details</h2>
@@ -132,6 +145,31 @@ $conn->close();
     <!-- <input type="submit" value="Add Event"> -->
 </form>
 </div>
+<script>
+    // Initialize Quill editor
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['bold', 'italic', 'underline'],
+                ['link', 'image'],
+                [{ 'align': [] }],
+                [{ 'color': [] }, { 'background': [] }],
+                ['clean']
+            ]
+        }
+    });
+
+    // Sync Quill content with hidden input field
+    quill.on('text-change', function() {
+        document.getElementById('event_msg').value = quill.root.innerHTML;
+    });
+
+    // Initialize hidden input with any existing value
+    document.getElementById('event_msg').value = quill.root.innerHTML;
+</script>
 
 </body>
 </html>

@@ -25,27 +25,30 @@ $conn->close();
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/view_events.css">
     <script>
-        // Show modal and fill event data
-        function showModal(eventId) {
-            fetch('get_event_details.php?id=' + eventId)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('modal_title').innerText = data.event_title;
-                    document.getElementById('modal_date').innerText = data.event_date;
-                    document.getElementById('modal_time').innerText = data.event_time;
-                    document.getElementById('modal_price').innerText = data.event_price;
-                    document.getElementById('modal_msg').innerText = data.event_msg;
+           // Show modal and fill event data
+    function showModal(eventId) {
+        fetch('get_event_details.php?id=' + eventId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('modal_title').innerText = data.event_title;
+                document.getElementById('modal_date').innerText = data.event_date;
+                document.getElementById('modal_time').innerText = data.event_time;
+                document.getElementById('modal_price').innerText = data.event_price;
+                document.getElementById('modal_msg').innerHTML = data.event_msg;
+                document.getElementById('modal_location').innerText = data.event_location;
+                document.getElementById('modal_map_link').href = data.google_map_link;
+                document.getElementById('modal_image').src = 'uploads/' + data.image;
 
-                    let ticketTable = document.getElementById('modal_tickets');
-                    ticketTable.innerHTML = '';
-                    data.tickets.forEach(ticket => {
-                        let row = `<tr><td>${ticket.ticket_name}</td><td>${ticket.ticket_price}</td></tr>`;
-                        ticketTable.innerHTML += row;
-                    });
-
-                    document.getElementById('modal').style.display = 'block';
+                let ticketTable = document.getElementById('modal_tickets');
+                ticketTable.innerHTML = '';
+                data.tickets.forEach(ticket => {
+                    let row = `<tr><td>${ticket.ticket_name}</td><td>${ticket.ticket_price}</td></tr>`;
+                    ticketTable.innerHTML += row;
                 });
-        }
+
+                document.getElementById('modal').style.display = 'block';
+            });
+    }
 
         // Hide modal
         function hideModal() {
@@ -101,7 +104,10 @@ $conn->close();
         <p><strong>Date:</strong> <span id="modal_date"></span></p>
         <p><strong>Time:</strong> <span id="modal_time"></span></p>
         <p><strong>Price:</strong> <span id="modal_price"></span></p>
-        <p><strong>Description:</strong> <span id="modal_msg"></span></p>
+        <p><strong>Description:</strong> <div id="modal_msg"></div></p>
+        <p><strong>Location:</strong> <span id="modal_location"></span></p>
+        <p><strong>Google Maps Link:</strong> <a id="modal_map_link" href="#" target="_blank">View on Google Maps</a></p>
+        <img id="modal_image" src="" alt="Event Image" style="width:100%; max-width:600px;">
         <h3>Tickets</h3>
         <table border="1">
             <thead>
