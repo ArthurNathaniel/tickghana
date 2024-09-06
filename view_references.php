@@ -22,24 +22,12 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     <title>Payment References</title>
     <?php include 'cdn.php'; ?>
     <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/view_references.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
+        .download-btn {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -48,7 +36,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     <section class="payment_successful">
         <h1>Payment Successful</h1>
         <p>Thank you for your purchase! Here are your ticket details:</p>
-        <table>
+        <table id="ticketTable">
             <thead>
                 <tr>
                     <th>Ticket Name</th>
@@ -64,6 +52,44 @@ if (json_last_error() !== JSON_ERROR_NONE) {
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <button class="download-btn" onclick="downloadPDF()">Download PDF</button>
     </section>
+
+    <script>
+        function downloadPDF() {
+            const { pdfMake, vfs } = window;
+
+            const tickets = Array.from(document.querySelectorAll('#ticketTable tbody tr')).map(row => {
+                const cells = row.querySelectorAll('td');
+                return [cells[0].textContent, cells[1].textContent];
+            });
+
+            const docDefinition = {
+                content: [
+                    { text: 'Payment References', style: 'header' },
+                    {
+                        table: {
+                            headerRows: 1,
+                            widths: [ '*', '*' ],
+                            body: [
+                                ['Ticket Name', 'Reference Number'],
+                                ...tickets
+                            ]
+                        },
+                        layout: 'lightHorizontalLines'
+                    }
+                ],
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                        margin: [0, 0, 0, 10]
+                    }
+                }
+            };
+
+            pdfMake.createPdf(docDefinition).download('payment_references.pdf');
+        }
+    </script>
 </body>
 </html>

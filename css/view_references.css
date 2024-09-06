@@ -1,0 +1,36 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #E99F04;
+    color: #FFF;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.payment_successful{
+    padding: 0 5%;
+    margin-top: 50px;
+}
+
+.payment_successful table{
+    margin-top: 30px;
+}
+
+.download-btn{
+    padding: 15px 45px;
+    border: none;
+    background-color: #E99F04;
+    color: #FFF;
+    font-weight: 900; 
+}
