@@ -1,5 +1,4 @@
 .login_all{
-    border: 2px solid;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,7 +20,8 @@ form{
     background-color: #FFF;
     padding: 0 5%;
     padding-block: 50px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
+    border: 2px solid #F1F1F1;
 }
 .forms_all{
     width: 100%;

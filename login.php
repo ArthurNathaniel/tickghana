@@ -32,6 +32,9 @@
                 Login
             </button>
         </div>
+        <div class="forms">
+            <p>Forgot password <a href="">Click here</a></p>
+        </div>
     </form>
     </div>
 </section>
